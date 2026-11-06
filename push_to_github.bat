@@ -6,33 +6,26 @@ echo   Push Intelligent Mandi Price Tracker to GitHub
 echo ========================================================
 echo.
 
-set DEFAULT_REPO=https://github.com/Harshithagarapati19/Intelligent_Mandi_Price_Tracker.git
-echo Default Repository: %DEFAULT_REPO%
-set /p REPO_URL="Enter GitHub Repository URL (Press Enter to use default): "
+set DEFAULT_REPO=https://github.com/Harshithagarapati19/MandiLens-price-tracker.git
+echo Target Repository: %DEFAULT_REPO%
+echo.
+set /p REPO_URL="Enter GitHub Repository URL (Press ENTER to use target): "
 
 if "%REPO_URL%"=="" (
     set REPO_URL=%DEFAULT_REPO%
 )
 
 echo.
-echo Initializing / Checking Git repository...
-if not exist .git (
-    git init
-    git config user.name "Harshitha Garapati"
-    git config user.email "harshithagarapati19@gmail.com"
-)
-
+echo Checking Git status...
 git add .
-git commit -m "Initial commit: Intelligent Mandi Price Trends, Anomaly Detection & SARIMA Forecasting" 2>nul
-
-echo Renaming branch to main...
+git commit -m "feat: Intelligent Mandi Price Tracker with SARIMA Forecasting & Anomaly Detection" 2>nul
 git branch -M main
 
-echo Configuring remote origin (%REPO_URL%)...
+echo Setting remote origin...
 git remote remove origin 2>nul
 git remote add origin %REPO_URL%
 
-echo Pushing codebase to GitHub...
+echo Pushing code to GitHub (%REPO_URL%)...
 git push -u origin main
 
 if %ERRORLEVEL% equ 0 (
@@ -42,9 +35,7 @@ if %ERRORLEVEL% equ 0 (
     echo ========================================================
 ) else (
     echo.
-    echo Push encountered an error. Please verify:
-    echo 1. You have created the repository on GitHub at %REPO_URL%
-    echo 2. You are logged into GitHub in your terminal/browser.
+    echo Push encountered an error. Please verify your GitHub credentials.
 )
 
 echo.
