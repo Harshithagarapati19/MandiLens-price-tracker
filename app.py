@@ -12,6 +12,10 @@ import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 from pathlib import Path
 from datetime import datetime
+import warnings
+
+# Suppress deprecation and runtime warnings for clean UI
+warnings.filterwarnings("ignore")
 
 # Import modular backend
 from src.data_loader import AgmarknetDataLoader
@@ -197,10 +201,10 @@ with st.sidebar:
 
     # Preset horizon buttons
     pcol1, pcol2 = st.columns(2)
-    if pcol1.button("Last 90 Days", use_container_width=True):
+    if pcol1.button("Last 90 Days", width="stretch"):
         st.session_state["start_date"] = max_date - pd.Timedelta(days=90)
         st.session_state["end_date"] = max_date
-    if pcol2.button("Full History", use_container_width=True):
+    if pcol2.button("Full History", width="stretch"):
         st.session_state["start_date"] = min_date
         st.session_state["end_date"] = max_date
 
@@ -354,7 +358,7 @@ with tabs[0]:
             xaxis=dict(showgrid=True, gridcolor="#f1f5f9"),
             yaxis=dict(showgrid=True, gridcolor="#f1f5f9")
         )
-        st.plotly_chart(fig_overview, use_container_width=True)
+        st.plotly_chart(fig_overview, width="stretch")
 
         # Leaderboard Table on latest reported day
         latest_date = filtered_df["Date"].max()
@@ -377,7 +381,7 @@ with tabs[0]:
                 f"Spread ({unit_label})": "₹{:,.1f}",
                 "Arrivals (Tonnes)": "{:,.1f}"
             }),
-            use_container_width=True
+            width="stretch"
         )
     else:
         st.warning("No data found for the current filter criteria.")
@@ -437,7 +441,7 @@ with tabs[1]:
                 yaxis=dict(title=f"Price ({unit_label})", showgrid=True, gridcolor="#f1f5f9"),
                 xaxis=dict(showgrid=True, gridcolor="#f1f5f9")
             )
-            st.plotly_chart(fig_ma, use_container_width=True)
+            st.plotly_chart(fig_ma, width="stretch")
 
         with tcol2:
             st.markdown("##### 🧪 **Augmented Dickey-Fuller (ADF) Stationarity Test**")
@@ -491,7 +495,7 @@ with tabs[1]:
             fig_decomp.add_trace(go.Scatter(x=decomp["residual"].index, y=decomp["residual"].values, mode="markers", marker=dict(color="#dc2626", size=3.5)), row=4, col=1)
 
             fig_decomp.update_layout(height=600, template="plotly_white", showlegend=False, margin=dict(l=20, r=20, t=40, b=20))
-            st.plotly_chart(fig_decomp, use_container_width=True)
+            st.plotly_chart(fig_decomp, width="stretch")
         else:
             st.info("Insufficient observations in current window for seasonal decomposition.")
     else:
@@ -558,7 +562,7 @@ with tabs[2]:
                 text_auto=".1f"
             )
             fig_arb_bar.update_layout(height=280, margin=dict(l=20, r=20, t=10, b=10), coloraxis_showscale=False)
-            st.plotly_chart(fig_arb_bar, use_container_width=True)
+            st.plotly_chart(fig_arb_bar, width="stretch")
 
         # Cross-mandi spatial boxplot
         st.markdown("##### 📦 **State-Wise Price Distribution Over Selected Timeline**")
@@ -572,7 +576,7 @@ with tabs[2]:
             labels={"Display_Modal": f"Modal Price ({unit_label})"}
         )
         fig_box.update_layout(height=340, margin=dict(l=20, r=20, t=10, b=20), showlegend=False)
-        st.plotly_chart(fig_box, use_container_width=True)
+        st.plotly_chart(fig_box, width="stretch")
     else:
         st.info("Select 'All Mandis' or broaden the date range to view inter-mandi arbitrage comparisons.")
 
@@ -658,7 +662,7 @@ with tabs[3]:
         xaxis=dict(showgrid=True, gridcolor="#f1f5f9"),
         legend=dict(orientation="h", y=1.05, x=0)
     )
-    st.plotly_chart(fig_anom, use_container_width=True)
+    st.plotly_chart(fig_anom, width="stretch")
 
     # Anomaly Incident Log Table
     st.markdown("##### 📋 **Anomaly Incident Audit Log**")
@@ -675,7 +679,7 @@ with tabs[3]:
                 f"Price ({unit_label})": "₹{:,.1f}",
                 "Z-Score": "{:+.2f}σ"
             }),
-            use_container_width=True
+            width="stretch"
         )
     else:
         st.success("No anomalies detected within current parameter thresholds.")
@@ -713,7 +717,7 @@ with tabs[4]:
                 options=[7, 14, 21, 30, 45, 60],
                 value=30
             )
-            auto_btn = st.button("⚡ Auto-Fit Optimal SARIMA Order", use_container_width=True)
+            auto_btn = st.button("⚡ Auto-Fit Optimal SARIMA Order", width="stretch")
 
         user_order = (int(p_val), int(d_val), int(q_val))
         user_seasonal_order = (int(P_val), int(D_val), int(Q_val), int(s_val))
@@ -800,7 +804,7 @@ with tabs[4]:
             xaxis=dict(showgrid=True, gridcolor="#f1f5f9"),
             legend=dict(orientation="h", y=1.05, x=0)
         )
-        st.plotly_chart(fig_sarima, use_container_width=True)
+        st.plotly_chart(fig_sarima, width="stretch")
 
         # Residual Diagnostics
         st.markdown("##### 🔬 **SARIMA Residual Diagnostics (Checking White Noise Assumptions)**")
@@ -816,7 +820,7 @@ with tabs[4]:
                     template="plotly_white"
                 )
                 fig_resid.update_layout(height=260, margin=dict(l=20, r=20, t=30, b=20))
-                st.plotly_chart(fig_resid, use_container_width=True)
+                st.plotly_chart(fig_resid, width="stretch")
 
         with rcol2:
             if not forecast_results["residuals"].empty:
@@ -828,7 +832,7 @@ with tabs[4]:
                     color_discrete_sequence=["#10b981"]
                 )
                 fig_hist.update_layout(height=260, margin=dict(l=20, r=20, t=30, b=20), showlegend=False)
-                st.plotly_chart(fig_hist, use_container_width=True)
+                st.plotly_chart(fig_hist, width="stretch")
 
     else:
         st.warning("Insufficient data points in current window to train SARIMA model.")
@@ -851,7 +855,7 @@ with tabs[5]:
                 data=csv_data,
                 file_name=f"agmarknet_{selected_commodity.lower()}_prices.csv",
                 mime="text/csv",
-                use_container_width=True
+                width="stretch"
             )
 
         display_df = filtered_df.copy()
@@ -873,7 +877,7 @@ with tabs[5]:
                 "Display_Modal": "₹{:,.1f}",
                 "Display_Spread": "₹{:,.1f}"
             }),
-            use_container_width=True,
+            width="stretch",
             height=450
         )
     else:

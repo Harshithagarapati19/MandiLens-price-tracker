@@ -1,0 +1,21 @@
+{
+  "name": "mandilens-price-tracker",
+  "version": "2.0.0",
+  "description": "An Intelligent System to Track Commodity Price Trends Across Mandis Over Time with SARIMA Forecasting & Anomaly Detection",
+  "scripts": {
+    "dev": "serve .",
+    "start": "serve .",
+    "build": "echo 'Build successful for Vercel Static Deployment'"
+  },
+  "keywords": [
+    "agmarknet",
+    "sarima",
+    "time-series-forecasting",
+    "anomaly-detection",
+    "commodity-prices",
+    "mandi-tracker",
+    "agriculture-intelligence"
+  ],
+  "author": "Harshitha Garapati",
+  "license": "MIT"
+}
